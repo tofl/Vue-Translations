@@ -17,8 +17,11 @@ const messages = {
   },
 };
 
+const authorisedLanguages = ['en', 'fr'];
+const locale = authorisedLanguages.includes(navigator.language) ? navigator.language : 'en';
+
 export default new VueI18n({
-  locale: navigator.language,
-  fallbackLocale: 'en',
+  locale,
+  fallbackLocale: 'fr',
   messages,
 });
