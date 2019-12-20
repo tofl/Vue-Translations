@@ -17,30 +17,37 @@ const routes = [
     path: '/:lang',
     name: 'lang',
     component: Home,
-    children: [
-      { path: 'user', name: 'user', component: User },
-      { path: 'posts', name: 'posts', component: Posts },
-    ],
-    beforeEnter: (to, from, next) => {
-      const locale = to.params.lang; // Retrieve the current locale set in the URL
-
-      // Check if the locale the user is trying to access is authorised.
-      // In a larger application that supports lots of languages, you may want to store
-      // all the locales in a separate array
-      if (!['en', 'fr'].includes(locale)) {
-        return next(i18n.locale);
-      }
-
-      // Changing the language from the URl (either manually or with a link) is possible this way
-      i18n.locale = locale;
-      return next();
-    },
+  },
+  {
+    path: '/:lang/user',
+    name: 'user',
+    component: User,
+  },
+  {
+    path: '/:lang/posts',
+    name: 'posts',
+    component: Posts,
   },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  const locale = to.params.lang; // Retrieve the current locale set in the URL
+
+  // Check if the locale the user is trying to access is authorised.
+  // In a larger application that supports lots of languages, you may want to store
+  // all the locales in a separate array
+  if (!['en', 'fr'].includes(locale)) {
+    return next(i18n.locale);
+  }
+
+  // Changing the language from the URl (either manually or with a link) is possible this way
+  i18n.locale = locale;
+  return next();
 });
 
 export default router;
